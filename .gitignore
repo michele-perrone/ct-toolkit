@@ -1,2 +1,2 @@
-build-src-Desktop-Debug/
-build-src-Desktop-Release/
+/build-src-Desktop-Debug/*
+/build-src-Desktop-Release/*
