@@ -1,4 +1,4 @@
-# ct-toolkit (TO BE UPDATED SOON)
+# Computer tomography toolkit (CT toolkit) (TO BE UPDATED SOON)
 This program can be run in GUI mode or command-line mode.  
 Main features:
 * Visualization of grayscale 512x512 computer tomography (CT) images
