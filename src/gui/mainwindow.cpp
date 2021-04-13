@@ -34,7 +34,10 @@ void MainWindow::setupMenuBar()
     // File
     connect(ui->actionLoad_uncompressed_image, &QAction::triggered, this, &MainWindow::openUncompressedImage);
     connect(ui->actionLoad_compressed_image, &QAction::triggered, this, &MainWindow::openCompressedImage);
-    connect(ui->actionExit, &QAction::triggered, this, &MainWindow::exitProgram);
+    connect(ui->actionLoad_LUT_color_table, &QAction::triggered, this, &MainWindow::openLUT);
+    connect(ui->actionSave_compressed_image, &QAction::triggered, this, &MainWindow::saveCompressedImage);
+    connect(ui->actionExit, &QAction::triggered, this, &MainWindow::exitProgram);    
+
 
     // Help
     connect(ui->actionAbout_CT_Toolkit, &QAction::triggered, this, &MainWindow::createAboutCTDialog);
@@ -51,20 +54,12 @@ void MainWindow::openUncompressedImage()
 
         // Create a grayscale BitMap from the IMG matrix
         IMGTools::load_IMG(IMG_filename.toStdString().c_str(), &IMG);
-        QImage myIMG((uint8_t*)IMG,
-                     512, 512, 512*sizeof(uint16_t),
-                     QImage::Format_Grayscale16);
+        QImage grayscaleIMG((uint8_t*)IMG,
+                            512, 512, 512*sizeof(uint16_t),
+                            QImage::Format_Grayscale16);
 
-        // Store the LUT color matrix
-        IMGTools::load_LUT(LUT_filename.toStdString().c_str(), &LUT);
-
-        // Convert the IMG into a color bitmap
-        QImage myColorIMG((uint8_t*)IMGTools::IMG_to_color_BMP(&IMG, &LUT).pixel,
-                          512, 512, 512*sizeof(uint8_t)*3,
-                          QImage::Format_RGB666);
-
-        // Display the color image
-        ui->imageLabel->setPixmap(QPixmap::fromImage(myColorIMG));
+        // Display the grayscale image
+        ui->imageLabel->setPixmap(QPixmap::fromImage(grayscaleIMG));
     }
     return;
 
@@ -72,11 +67,74 @@ void MainWindow::openUncompressedImage()
 
 void MainWindow::openCompressedImage()
 {
-    QString fileName = QFileDialog::getOpenFileName(this);
-    if (!fileName.isEmpty())
-        ui->textBrowser->setText(fileName);
+    compressedImage_filename = QFileDialog::getOpenFileName(this);
+    if (!compressedImage_filename.isEmpty())
+    {
+        // Read the binarized quadtree from file and reconstruct the IMG
+        QuadTree* quadtree = new QuadTree(&IMG, 512, 0);
+        quadtree->read_binarized_tree_from_file(compressedImage_filename.toStdString().c_str());
+        quadtree->reconstruct_IMG();
+
+        QImage grayscaleIMG((uint8_t*)quadtree->IMG,
+                            512, 512, 512*sizeof(uint16_t),
+                            QImage::Format_Grayscale16);
+
+        // Display the grayscale image
+        ui->imageLabel->setPixmap(QPixmap::fromImage(grayscaleIMG));
+
+        delete quadtree;
+    }
 }
 
+void MainWindow::openLUT()
+{
+    LUT_filename = QFileDialog::getOpenFileName(this);
+    if (!LUT_filename.isEmpty())
+    {
+        // Store the LUT color matrix
+        IMGTools::load_LUT(LUT_filename.toStdString().c_str(), &LUT);
+
+        // Convert the IMG into a color bitmap
+        QImage colorIMG((uint8_t*)IMGTools::IMG_to_color_BMP(&IMG, &LUT).pixel,
+                        512, 512, 512*sizeof(uint8_t)*3,
+                        QImage::Format_RGB666);
+
+        // Display the color image
+        ui->imageLabel->setPixmap(QPixmap::fromImage(colorIMG));
+    }
+}
+
+void MainWindow::saveCompressedImage()
+{
+    compressedImage_filename = QFileDialog::getSaveFileName(this);
+    if (!compressedImage_filename.isEmpty())
+    {
+        // Create a quadtree and save it to a file
+        compression_parameter = 100;
+        QuadTree* quadtree = new QuadTree(&IMG, 512, compression_parameter);
+        quadtree->construct_tree(quadtree->root_node);
+        quadtree->write_binarized_tree_to_file(compressedImage_filename.toStdString().c_str());
+        delete quadtree;
+    }
+}
+
+void MainWindow::saveUnCompressedImage()
+{
+    uncompressedImage_filename = QFileDialog::getSaveFileName(this);
+    if (!uncompressedImage_filename.isEmpty())
+    {
+        loadedIMG.save(uncompressedImage_filename, "png");
+    }
+}
+
+void MainWindow::exitProgram()
+{
+    exit(0);
+}
+
+/****************************************************
+ ******************* DIALOGS ************************
+ ****************************************************/
 void MainWindow::createAboutCTDialog()
 {
     QMessageBox aboutCTDialog(this);
@@ -122,9 +180,4 @@ void MainWindow::createAboutMeDialog()
 void MainWindow::createAboutQtDialog()
 {
     QMessageBox::aboutQt(this, "About Qt");
-}
-
-void MainWindow::exitProgram()
-{
-    exit(0);
 }

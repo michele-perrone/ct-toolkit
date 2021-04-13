@@ -18,6 +18,9 @@ public:
 private slots:
     void openUncompressedImage();
     void openCompressedImage();
+    void openLUT();
+    void saveCompressedImage();
+    void saveUnCompressedImage();
     void createAboutCTDialog();
     void createAboutMeDialog();
     void createAboutQtDialog();
@@ -29,10 +32,12 @@ private:
     void setupMenuBar();
 
     uint16_t IMG [512][512];
-    unsigned char LUT [256][3];
-    short int compression_parameter;
+    uint8_t LUT [256][3];
+    int16_t compression_parameter;
     QString IMG_filename;
     QString LUT_filename;
+    QString compressedImage_filename;
+    QString uncompressedImage_filename;
     QImage loadedIMG;
 };
 

@@ -67,7 +67,7 @@ Node::Node(bool _is_leaf, Boundary _boundary, uint16_t _luminance,
     south_east = _south_east;
     south_west = _south_west;
 }
-Node::Node(Boundary _boundary, short int _luminance)
+Node::Node(Boundary _boundary, uint16_t _luminance)
 {
     is_leaf = true;
     boundary = _boundary;
@@ -88,7 +88,7 @@ Node::Node()
     south_west = NULL;
 }
 
-QuadTree::QuadTree(uint16_t (*_IMG)[MAX_IMG_RES][MAX_IMG_RES], int _IMG_resolution, short int _compression_parameter)
+QuadTree::QuadTree(uint16_t (*_IMG)[MAX_IMG_RES][MAX_IMG_RES], int _IMG_resolution, int16_t _compression_parameter)
 {
     IMG = _IMG;
     IMG_resolution = _IMG_resolution;
@@ -234,7 +234,7 @@ void QuadTree::print_IMG()
     return;
 }
 
-void QuadTree::write_binarized_tree_to_file(char* file_name)
+void QuadTree::write_binarized_tree_to_file(const char* file_name)
 {
     FILE* fout = fopen(file_name, "wb");
     unsigned long bits_to_write = 8 + 8 + binarized_tree.size();
@@ -267,7 +267,7 @@ void QuadTree::write_binarized_tree_to_file(char* file_name)
     return;
 }
 
-void QuadTree::read_binarized_tree_from_file(char* file_name)
+void QuadTree::read_binarized_tree_from_file(const char* file_name)
 {
     FILE* fin = fopen(file_name, "rb");
     uint8_t IMG_resolution_power;

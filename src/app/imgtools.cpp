@@ -101,3 +101,20 @@ BITMAP IMGTools::IMG_to_color_BMP(uint16_t (*IMG)[512][512], unsigned char (*LUT
 
     return CLR_bitmap;
 }
+
+BITMAP IMGTools::IMG_to_grayscale_BMP(uint16_t (*IMG)[512][512])
+{
+    BITMAP grayscale_bitmap = CreateEmptyBitmap(512, 512);
+    for (int i = 0; i < 512; i++)
+    {
+      for (int j = 0; j < 512; j++)
+      {
+          PIXEL (grayscale_bitmap, i, j).red =
+          PIXEL (grayscale_bitmap, i, j).green =
+          PIXEL (grayscale_bitmap, i, j).blue = (*IMG)[i][j] / 256;
+      }
+    }
+
+    return grayscale_bitmap;
+}
+

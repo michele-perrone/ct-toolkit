@@ -44,7 +44,7 @@ struct Node
 {
     bool is_leaf;
     Boundary boundary;
-    short int luminance;
+    uint16_t luminance;
 
     // The children are in clockwise order.
     Node* north_west;
@@ -54,7 +54,7 @@ struct Node
 
     Node(bool _is_leaf, Boundary _boundary, uint16_t _luminance,
          Node* _north_west, Node* _north_east, Node* _south_east, Node* _south_west);
-    Node(Boundary _boundary, short int _luminance);
+    Node(Boundary _boundary, uint16_t _luminance);
     Node();
 };
 
@@ -66,7 +66,7 @@ struct QuadTree
     Node* root_node;
     vector<bool> binarized_tree;
 
-    QuadTree(uint16_t (*_IMG)[MAX_IMG_RES][MAX_IMG_RES], int _IMG_resolution, short int _compression_parameter);
+    QuadTree(uint16_t (*_IMG)[MAX_IMG_RES][MAX_IMG_RES], int _IMG_resolution, int16_t _compression_parameter);
 
     // Removes all dynamically allocated memory.
     ~QuadTree();
@@ -80,9 +80,9 @@ struct QuadTree
     // Prints the IMG as a matrix
     void print_IMG();
 
-    void write_binarized_tree_to_file(char* file_name);
+    void write_binarized_tree_to_file(const char *file_name);
 
-    void read_binarized_tree_from_file(char* file_name);
+    void read_binarized_tree_from_file(const char* file_name);
 
 private:
     // Does the actual reconstruction job
