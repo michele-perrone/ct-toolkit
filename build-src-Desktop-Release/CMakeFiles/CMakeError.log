@@ -1,0 +1,42 @@
+Performing C++ SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /home/michele/Documents/projects/ct-toolkit/build-src-Desktop-Release/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_b51ee/fast && /usr/bin/make  -f CMakeFiles/cmTC_b51ee.dir/build.make CMakeFiles/cmTC_b51ee.dir/build
+make[1]: Entering directory '/home/michele/Documents/projects/ct-toolkit/build-src-Desktop-Release/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_b51ee.dir/src.cxx.o
+/usr/bin/clang++ -DCMAKE_HAVE_LIBC_PTHREAD  -std=gnu++20 -MD -MT CMakeFiles/cmTC_b51ee.dir/src.cxx.o -MF CMakeFiles/cmTC_b51ee.dir/src.cxx.o.d -o CMakeFiles/cmTC_b51ee.dir/src.cxx.o -c /home/michele/Documents/projects/ct-toolkit/build-src-Desktop-Release/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_b51ee
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b51ee.dir/link.txt --verbose=1
+/usr/bin/clang++ CMakeFiles/cmTC_b51ee.dir/src.cxx.o -o cmTC_b51ee 
+/usr/bin/ld: CMakeFiles/cmTC_b51ee.dir/src.cxx.o: in function `main':
+src.cxx:(.text+0x22): undefined reference to `pthread_create'
+/usr/bin/ld: src.cxx:(.text+0x2e): undefined reference to `pthread_detach'
+/usr/bin/ld: src.cxx:(.text+0x3a): undefined reference to `pthread_cancel'
+/usr/bin/ld: src.cxx:(.text+0x4c): undefined reference to `pthread_join'
+clang-11: error: linker command failed with exit code 1 (use -v to see invocation)
+make[1]: *** [CMakeFiles/cmTC_b51ee.dir/build.make:100: cmTC_b51ee] Error 1
+make[1]: Leaving directory '/home/michele/Documents/projects/ct-toolkit/build-src-Desktop-Release/CMakeFiles/CMakeTmp'
+make: *** [Makefile:127: cmTC_b51ee/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+static void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_cancel(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
