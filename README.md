@@ -38,10 +38,11 @@ LUT tables associate each possible luminance value to a 24-bit RGB color value (
 Head over to the [source folder](/src) if you want to know how the code is structured.
 
 ## TODO
-* Status bar when compressing / decompressing images
-* Save uncompressed colorized images
-* Save compressed colorized images
-* Improve the GUI: window resizing depending on screen resolution and image size, widget scaling, theming...
-* Optimize BinaryTools (current bottleneck for compression / decompression)
+* [X] Add a GUI concept
+* [ ] Status bar when compressing / decompressing images
+* [ ] Save uncompressed colorized images
+* [ ] Save compressed colorized images
+* [ ] Improve the GUI: window resizing depending on screen resolution and image size, widget scaling, theming...
+* [ ] Optimize BinaryTools (current bottleneck for compression / decompression)
 
 
