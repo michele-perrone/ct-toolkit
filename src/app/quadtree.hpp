@@ -6,7 +6,6 @@
 #include "binarytools.hpp"
 #define MAX_IMG_RES 512
 #define MAX_NAME_LENGTH 64
-using namespace std;
 
 
 struct Coordinates
@@ -64,7 +63,7 @@ struct QuadTree
     short int IMG_resolution;
     short int compression_parameter;
     Node* root_node;
-    vector<bool> binarized_tree;
+    std::vector<bool> binarized_tree;
 
     QuadTree(uint16_t (*_IMG)[MAX_IMG_RES][MAX_IMG_RES], int _IMG_resolution, int16_t _compression_parameter);
 

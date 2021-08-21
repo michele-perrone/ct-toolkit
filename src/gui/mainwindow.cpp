@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     // Main window GUI setup
     ui->setupUi(this);
-    this->resize(QGuiApplication::primaryScreen()->availableSize() * 3 / 4);
+    //this->resize(QGuiApplication::primaryScreen()->availableSize() * 3 / 4);
     this->setWindowTitle("Computer tomography toolkit");
     setupMenuBar();
 
@@ -110,7 +110,7 @@ void MainWindow::saveCompressedImage()
     if (!compressedImage_filename.isEmpty())
     {
         // Create a quadtree and save it to a file
-        compression_parameter = 100;
+        compression_parameter = 500;
         QuadTree* quadtree = new QuadTree(&IMG, 512, compression_parameter);
         quadtree->construct_tree(quadtree->root_node);
         quadtree->write_binarized_tree_to_file(compressedImage_filename.toStdString().c_str());

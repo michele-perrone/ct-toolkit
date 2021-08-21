@@ -2,13 +2,14 @@
 #include <vector>
 #include <bitset>
 
-#define N_OF_BITS_PIXEL 12
+#define N_OF_BITS_PIXEL 16
 #define N_OF_BITS_BYTE 8
 
 namespace BinaryTools
 {
     // Read a value from a binary vector
     short int read_short_from_binary_vector(std::vector<bool> bits, int vector_index);
+    uint16_t read_uint16_from_binary_vector(std::vector<bool> bits, int vector_index, uint8_t n_of_bits_from_MSB);
     uint8_t read_byte_from_binary_vector(std::vector<bool> bits, unsigned long vector_index);
 
     // Write a value to a binary vector

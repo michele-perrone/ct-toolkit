@@ -22,6 +22,19 @@ short int BinaryTools::read_short_from_binary_vector(std::vector<bool> bits, int
     return number;
 }
 
+uint16_t read_uint16_from_binary_vector(std::vector<bool> bits, int vector_index, uint8_t n_of_bits_from_MSB)
+{
+    uint16_t number = 0;
+
+    for (int shift_index = n_of_bits_from_MSB-1; shift_index >= 0; shift_index--)
+    {
+        number |= (bits[vector_index] << shift_index);
+        vector_index++;
+    }
+
+    return number;
+}
+
 uint8_t BinaryTools::read_byte_from_binary_vector(std::vector<bool> bits, unsigned long vector_index)
 {
     uint8_t byte = 0;
