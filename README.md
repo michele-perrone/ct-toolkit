@@ -16,7 +16,7 @@ The program can be used in command-line mode or GUI mode. For most users, GUI mo
 * Saving the compressed grayscale CT image
 
 Saving the colorized CT image is currently unsupported (will do).   
-You can try out the features on the CT images and LUT tables in [SampleImages/](/SampleImages) and [SampleLUTs/](/SampleLUTs) respectively.
+You can try out the features on the CT images and LUT tables contained in the [SampleImages](/SampleImages) and [SampleLUTs](/SampleLUTs) folders respectively.
 
 ## How does it work
 ### About quad-tree compression
@@ -29,9 +29,9 @@ Quad-tree compression is a (potentially) lossy recursive algorithm. The idea is 
 
 ### CT images and colorization
 CT images have an .IMG extension and a fixed resolution of 512*512 pixels. Each pixel has a signed 12-bit luminance value ranging from -2048 to 2047 (-2^12/2 to 2^12/2-1).   
-LUT tables associate each possible luminance value to a 24-bit RGB color value (8 bits per color channel, i.e. 0 to 255). They can be seen as matrices with 256 rows and 3 columns, where each row corresponds to a luminance value. The only thing we have to be careful about is that original [-2048, 2047) luminance range has to be rescaled in order to pick the correct LUT color:   
+LUT tables associate each possible luminance value to a 24-bit RGB color value (8 bits per color channel, i.e. 0 to 255). They can be seen as matrices with 256 rows and 3 columns, where each row corresponds to a luminance value. The only thing we have to be careful about is that original [-2048, 2047) luminance range has to be rescaled in order to pick the correct LUT color, for example like this:   
 
-´LUT color index = ( ( CT luminance + 2048 ) / 4095 ) * 255´
+`LUT color index = ( ( CT luminance + 2048 ) / 4095 ) * 255`
 
 
 ### Code structure (still not there)
@@ -43,4 +43,5 @@ Head over to the [source folder](/src) if you want to know how the code is struc
 * Save compressed colorized images
 * Improve the GUI: window resizing depending on screen resolution and image size, widget scaling, theming...
 * Optimize BinaryTools (current bottleneck for compression / decompression)
+
 
